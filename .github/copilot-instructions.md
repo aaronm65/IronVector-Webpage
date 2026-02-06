@@ -10,7 +10,7 @@ Python 3 includes a simple HTTP server that can serve static files:
 
 ```bash
 # Navigate to the repository root
-cd /home/runner/work/IronVector-Webpage/IronVector-Webpage
+cd <repository-directory>
 
 # Start the server (Python 3)
 python3 -m http.server 8000
