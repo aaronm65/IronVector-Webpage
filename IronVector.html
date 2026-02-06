@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0a0a0a"/>
+  <meta name="description" content="IronVector — Intelligent gym tracking for iOS. Build smarter workouts, track real performance, enforce progressive overload."/>
+  <title>IronVector — Train Smarter. Lift Heavier.</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&family=Barlow+Condensed:wght@600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* =========================================================
+       IRONVECTOR — 1:1 APP-LIKE LANDING (NO LIBS, PURE HTML/CSS/JS)
+       ========================================================= */
+
+    :root{
+      --bg:#0a0a0a;
+      --ink:#ffffff;
+      --muted: rgba(255,255,255,.62);
+      --muted2: rgba(255,255,255,.40);
+
+      /* app reds */
+      --redA:#8B3938;   /* app gradient top */
+      --redB:#5A2828;   /* app gradient mid */
+      --redC:#3a1616;   /* deeper */
+      --accent:#ff3b30;
+
+      /* iOS system-like colors */
+      --blue:#007aff;
+      --green:#34c759;
+      --orange:#ff9500;
+      --gold:#ffd85a;
+
+      /* surfaces */
+      --glass: rgba(0,0,0,.34);
+      --glass2: rgba(0,0,0,.26);
+      --cardBorder: rgba(255,255,255,.14);
+      --hair: rgba(255,255,255,.10);
+
+      --radiusXL: 26px;
+      --radiusL: 18px;
+      --radiusM: 16px;
+      --radiusS: 14px;
+
+      --fontDisplay: 'Barlow Condensed', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --fontBody: 'Barlow', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --fontMono: 'Share Tech Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+      /* motion */
+      --easeOut: cubic-bezier(.16,1,.3,1);
+      --spring: cubic-bezier(.34,1.56,.64,1);
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family: var(--fontBody);
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x:hidden;
+    }
+    a{ color:inherit; text-decoration:none; }
+    button{ font-family:inherit; border:0; background:none; color:inherit; cursor:pointer; }
+    img{ max-width:100%; display:block; }
+
+    /* ====== BACKGROUND LIKE APP ====== */
+    .app-bg{
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(255,59,48,.28), transparent 60%),
+        radial-gradient(900px 700px at 110% 10%, rgba(255,59,48,.18), transparent 55%),
+        linear-gradient(180deg, rgba(139,57,56,1) 0%, rgba(90,40,40,1) 44%, rgba(10,10,10,1) 92%);
+      position:relative;
+    }
+    /* subtle noise overlay */
+    .app-bg::after{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      opacity:.02;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size:200px 200px;
+      z-index:999;
+    }
+
+    /* ====== NAV (glass like iOS top bar) ====== */
+    .nav{
+      position:fixed; top:0; left:0; right:0;
+      z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 20px;
+      background: rgba(10,10,10,.42);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      transition: padding .25s var(--easeOut), background .25s var(--easeOut);
+    }
+    .nav.scrolled{ padding:12px 20px; background: rgba(10,10,10,.58); }
+
+    .nav-left{ display:flex; align-items:center; gap:12px; }
+    .logo-dot{
+      width:34px; height:34px; border-radius:12px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .logo-dot img{ width:26px; height:26px; object-fit:contain; }
+    .nav-brand{
+      font-family:var(--fontDisplay);
+      font-weight:900;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      font-size:1.15rem;
+      line-height:1;
+    }
+    .nav-right{ display:flex; align-items:center; gap:10px; }
+    .pill{
+      display:inline-flex; align-items:center; justify-content:center;
+      height:36px;
+      padding:0 14px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font-size:.78rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.78);
+      transition: transform .15s, border-color .2s, background .2s;
+    }
+    .pill:active{ transform:scale(.96); }
+    .pill.primary{
+      background: rgba(255,59,48,.22);
+      border-color: rgba(255,59,48,.42);
+      color:#fff;
+    }
+    .pill.primary:hover{
+      background: rgba(255,59,48,.28);
+      border-color: rgba(255,59,48,.55);
+    }
+
+    /* ====== HERO (app-like header, not marketing-y) ====== */
+    .hero{
+      padding-top:86px;
+      padding-bottom:32px;
+      max-width:1080px;
+      margin:0 auto;
+    }
+    .hero-inner{
+      padding:18px 18px 0;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .hero-card{
+      border-radius: var(--radiusXL);
+      background: rgba(0,0,0,.26);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow:hidden;
+      padding:22px 22px 18px;
+      position:relative;
+    }
+    .hero-topline{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:14px;
+    }
+    .hero-date{
+      font-family: var(--fontMono);
+      font-size:.8rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.55);
+    }
+    .hero-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255,59,48,.18);
+      border:1px solid rgba(255,59,48,.34);
+      color:#fff;
+      font-weight:700;
+      font-size:.78rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .hero-title{
+      font-family: var(--fontDisplay);
+      font-weight:900;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      letter-spacing: -.02em;
+      text-transform:uppercase;
+      line-height: .95;
+    }
+    .hero-title .accent{ color: var(--accent); }
+    .hero-sub{
+      margin-top:12px;
+      color: rgba(255,255,255,.68);
+      font-size:1.05rem;
+      line-height:1.6;
+      font-weight:400;
+      max-width:52ch;
+    }
+
+    .hero-actions{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center;
+      height:46px;
+      padding:0 18px;
+      border-radius:14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.22);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:.82rem;
+      transition: transform .15s, border-color .2s, background .2s;
+    }
+    .cta.primary{
+      background: rgba(255,59,48,.26);
+      border-color: rgba(255,59,48,.55);
+    }
+    .cta:hover{ border-color: rgba(255,255,255,.24); }
+    .cta.primary:hover{ border-color: rgba(255,59,48,.72); background: rgba(255,59,48,.32); }
+    .cta:active{ transform:scale(.97); }
+
+    .mini-stack{
+      border-radius: var(--radiusXL);
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      position:relative;
+      overflow:hidden;
+    }
+    .mini-card{
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      padding:14px;
+    }
+    .mini-label{
+      font-family: var(--fontMono);
+      font-size:.72rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.55);
+      margin-bottom:8px;
+    }
+    .mini-metric{
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap:12px;
+    }
+    .mini-metric .big{
+      font-family: var(--fontDisplay);
+      font-weight:900;
+      font-size:2.4rem;
+      line-height:1;
+    }
+    .mini-metric .small{
+      font-size:.95rem;
+      color: rgba(255,255,255,.65);
+      font-weight:600;
+    }
+    .mini-progress{
+      margin-top:10px;
+      height:8px;
+      border-radius:6px;
+      background: rgba(255,255,255,.14);
+      overflow:hidden;
+    }
+    .mini-progress > div{
+      height:100%;
+      width: 0%;
+      border-radius:6px;
+      background: linear-gradient(90deg, var(--accent), rgba(255,107,95,1));
+      transition: width .8s var(--easeOut);
+    }
+
+    /* ====== SECTION WRAP ====== */
+    .section{
+      max-width:1080px;
+      margin:0 auto;
+      padding: 16px 18px 72px;
+    }
+
+    /* ====== APP SCREEN FRAME ====== */
+    .screen-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      align-items:start;
+    }
+    .screen{
+      border-radius: var(--radiusXL);
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow:hidden;
+      position:relative;
+      min-height: 720px;
+    }
+    .screen-header{
+      padding:18px 18px 14px;
+      position:sticky;
+      top:0;
+      background: rgba(20,20,22,.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      z-index:2;
+    }
+    .screen-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .back-btn{
+      width:42px; height:42px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:center;
+      transition: transform .15s;
+    }
+    .back-btn:active{ transform:scale(.95); }
+
+    .screen-title{
+      font-family: var(--fontDisplay);
+      font-weight:900;
+      letter-spacing:-.01em;
+      font-size: 2.2rem;
+      line-height:1.02;
+      margin-top:10px;
+    }
+    .screen-sub{
+      margin-top:8px;
+      color: rgba(255,255,255,.55);
+      font-size:1.05rem;
+      font-weight:700;
+    }
+
+    /* iOS progress bar below "Set 2 of 3" */
+    .ios-bar{
+      margin-top:12px;
+      height:4px;
+      border-radius:999px;
+      background: rgba(255,255,255,.14);
+      overflow:hidden;
+    }
+    .ios-bar > div{
+      height:100%;
+      width: 0%;
+      border-radius:999px;
+      background: var(--blue);
+      transition: width .75s var(--easeOut);
+    }
+
+    .screen-body{
+      padding:16px 18px 160px;
+    }
+
+    /* ====== WORKOUT LIST SCREEN (matches your workout view) ====== */
+    .workout-header{
+      padding:18px 18px 14px;
+      position:sticky;
+      top:0;
+      background: rgba(10,10,10,.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      z-index:2;
+    }
+    .workout-headline{
+      font-family: var(--fontDisplay);
+      font-weight:900;
+      font-size: 2.6rem;
+      line-height:1;
+      letter-spacing:-.02em;
+    }
+    .workout-headline .accent{ color: var(--accent); }
+    .workout-time{
+      margin-top:6px;
+      font-family: var(--fontMono);
+      color: rgba(255,255,255,.55);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:.82rem;
+    }
+
+    .demo-rows{
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    /* row style like your “demo-phone” list but 1:1 to app vibe */
+    .set-tile{
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.10));
+      border: 1px solid rgba(255,255,255,.16);
+      padding:18px 18px;
+      display:grid;
+      grid-template-columns: 64px 1fr 28px;
+      gap:16px;
+      align-items:center;
+      transform: translateY(18px);
+      opacity:0;
+      transition: transform .55s var(--easeOut), opacity .55s var(--easeOut), border-color .25s, background .25s, box-shadow .25s;
+      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    }
+    .set-tile.visible{ transform: translateY(0); opacity:1; }
+
+    .set-num{
+      width:56px; height:56px;
+      border-radius:999px;
+      border: 4px solid rgba(255,59,48,.95);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900;
+      color: rgba(255,59,48,1);
+      font-family: var(--fontDisplay);
+      font-size:1.4rem;
+      background: rgba(255,59,48,.14);
+    }
+
+    .set-main{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+
+    .ex-name{
+      font-weight:900;
+      font-size:1.02rem;
+      letter-spacing:.01em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .set-values{ text-align:right; display:flex; flex-direction:column; gap:4px; font-family: var(--fontMono); color: rgba(255,255,255,.72); font-size:.86rem; }
+    .set-values .strong{ color:#fff; font-weight:900; font-family: var(--fontBody); font-size:.92rem; }
+
+    /* workout progress bottom bar */
+    .workout-progress{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding:14px 16px 16px;
+      background: rgba(28,28,30,.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .wp-top{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:10px;
+      font-family: var(--fontMono);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:.78rem;
+      color: rgba(255,255,255,.58);
+    }
+    .wp-bar{
+      height:4px;
+      border-radius:999px;
+      background: rgba(255,255,255,.14);
+      overflow:hidden;
+    }
+    .wp-bar > div{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background: var(--accent);
+      transition: width .9s var(--easeOut);
+    }
+    .wp-nums{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:16px;
+      align-items:end;
+    }
+    .wp-num{
+      font-family: var(--fontDisplay);
+      font-weight:900;
+      font-size:2rem;
+      line-height:1;
+    }
+    .wp-num small{
+      font-family: var(--fontBody);
+      font-weight:700;
+      font-size:1rem;
+      color: rgba(255,255,255,.55);
+    }
+    .wp-label{
+      margin-top:4px;
+      font-family: var(--fontMono);
+      font-size:.70rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.50);
+    }
+    .wp-right{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      color: rgba(255,255,255,.55);
+      font-size:.95rem;
+      font-weight:800;
+    }
+
+    /* ====== RIGHT SCREEN: EXERCISE VIEW (matches your set editor vibe) ====== */
+    .last-session{
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      padding:14px;
+      margin-top:14px;
+    }
+    .ls-title{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900;
+      font-size:1.02rem;
+    }
+    .ls-title .clock{
+      width:18px; height:18px;
+      border-radius:999px;
+      background: rgba(0,122,255,.18);
+      border: 1px solid rgba(0,122,255,.32);
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .ls-grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:10px;
+    }
+    .ls-cell .k{
+      font-size:.74rem;
+      color: rgba(255,255,255,.50);
+      letter-spacing:.06em;
+      margin-bottom:4px;
+    }
+    .ls-cell .v{
+      font-weight:900;
+      font-size:1.05rem;
+    }
+    .ls-date{
+      margin-top:10px;
+      color: rgba(255,255,255,.42);
+      font-size:.8rem;
+    }
+
+    .hint{
+      margin-top:12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      padding:10px 12px;
+      color: rgba(255,255,255,.60);
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      font-size:.92rem;
+    }
+    .hint .spark{
+      width:16px; height:16px;
+      border-radius:6px;
+      background: rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:center;
+      color: rgba(255,255,255,.55);
+      font-family: var(--fontMono);
+      font-size:.85rem;
+    }
+
+    .set-card{
+      margin-top:14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      padding:14px;
+    }
+    .set-card-head{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:12px;
+    }
+    .set-card-title{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900;
+      font-size:1.05rem;
+    }
+    .done-badge{
+      width:18px; height:18px;
+      border-radius:999px;
+      background: var(--green);
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .done-badge svg{ width:12px; height:12px; }
+
+    .close-x{
+      width:32px; height:32px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:center;
+      color: rgba(255,255,255,.45);
+    }
+
+    .set-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 56px;
+      gap:10px;
+      align-items:end;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .field label{
+      font-size:.74rem;
+      color: rgba(255,255,255,.50);
+      letter-spacing:.06em;
+      font-weight:800;
+    }
+    .stepper{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .step-btn{
+      width:34px; height:34px;
+      border-radius:10px;
+      background: rgba(0,0,0,.32);
+      border: 1px solid rgba(255,255,255,.10);
+      color: var(--accent);
+      font-weight:900;
+      font-size:1.2rem;
+      display:flex; align-items:center; justify-content:center;
+      transition: transform .12s, background .2s;
+    }
+    .step-btn:active{ transform:scale(.90); }
+    .step-val{
+      flex:1;
+      height:38px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.26);
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900;
+      font-size:1.25rem;
+    }
+    .action-btn{
+      width:56px; height:56px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:center;
+      transition: transform .15s var(--spring), filter .2s;
+    }
+    .action-btn:active{ transform:scale(.94); }
+    .action-btn.reset{
+      background: rgba(255,149,0,.85);
+    }
+    .action-btn.confirm{
+      background: rgba(52,199,89,.90);
+    }
+
+    /* bottom mini stats inside exercise screen */
+    .exercise-bottom{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding:14px 16px 16px;
+      background: rgba(28,28,30,.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .exercise-bottom .bar{
+      height:4px;
+      border-radius:999px;
+      background: rgba(255,255,255,.14);
+      overflow:hidden;
+      margin-bottom:12px;
+    }
+    .exercise-bottom .bar > div{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background: var(--blue);
+      transition: width .75s var(--easeOut);
+    }
+    .exercise-bottom .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:12px;
+      align-items:end;
+    }
+    .eb-big{
+      font-family: var(--fontDisplay);
+      font-weight:900;
+      font-size:2rem;
+      line-height:1;
+    }
+    .eb-sub{
+      margin-top:4px;
+      font-family: var(--fontMono);
+      font-size:.70rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.50);
+    }
+    .eb-right{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      color: rgba(255,255,255,.55);
+      font-weight:900;
+      font-size:1rem;
+    }
+
+    /* ====== REVEAL ANIMATIONS (scroll-in) ====== */
+    .reveal{
+      opacity:0;
+      transform: translateY(22px);
+      transition: opacity .55s var(--easeOut), transform .55s var(--easeOut);
+    }
+    .reveal.visible{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* ====== FOOTER ====== */
+    .footer{
+      max-width:1080px;
+      margin:0 auto;
+      padding: 28px 18px 46px;
+      color: rgba(255,255,255,.55);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .footer .links{ display:flex; gap:18px; }
+    .footer a{ color: rgba(255,255,255,.55); }
+    .footer a:hover{ color:#fff; }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 920px){
+      .hero-inner{ grid-template-columns: 1fr; }
+      .screen-row{ grid-template-columns: 1fr; }
+      .screen{ min-height: 680px; }
+    }
+  </style>
+</head>
+
+<body class="app-bg">
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="nav-left">
+      <div class="logo-dot">
+        <!-- Replace with your actual logo path (png/svg). -->
+        <img src="ironvector-logo.png" alt="IronVector Logo"/>
+      </div>
+      <div>
+        <div class="nav-brand">IronVector</div>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <a class="pill" href="#demo">Demo</a>
+      <a class="pill primary" href="https://apps.apple.com" target="_blank" rel="noreferrer">Download</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="hero" id="top">
+    <div class="hero-inner">
+
+      <section class="hero-card reveal">
+        <div class="hero-topline">
+          <div class="hero-date">IronVector • iOS</div>
+          <div class="hero-chip">
+            <span style="width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.75);display:inline-block"></span>
+            Live Training UI
+          </div>
+        </div>
+
+        <h1 class="hero-title">
+          Train <span class="accent">Smarter</span><br/>
+          Lift <span class="accent">Heavier</span><br/>
+          Progress <span class="accent">Faster</span>
+        </h1>
+
+        <p class="hero-sub">
+          The website mirrors the app: glass cards, red gradients, set-by-set tracking, and smooth iOS-like motion.
+        </p>
+
+        <div class="hero-actions">
+          <a class="cta primary" href="#demo">See Workout Demo</a>
+          <a class="cta" href="https://apps.apple.com" target="_blank" rel="noreferrer">App Store</a>
+        </div>
+      </section>
+
+      <aside class="mini-stack reveal">
+        <div class="mini-card">
+          <div class="mini-label">Workout Progress</div>
+          <div class="mini-metric">
+            <div class="big" id="miniPct">0%</div>
+            <div class="small">Push Day — Upper</div>
+          </div>
+          <div class="mini-progress"><div id="miniBar"></div></div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-label">Today</div>
+          <div class="mini-metric">
+            <div class="big" id="miniTime">0:00</div>
+            <div class="small">Elapsed</div>
+          </div>
+          <div style="margin-top:10px;color:rgba(255,255,255,.55);font-weight:800;">
+            Scroll to animate the workout fill
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- DEMO SECTION -->
+  <section class="section" id="demo">
+    <div class="screen-row">
+
+      <!-- LEFT: WORKOUT VIEW (the “Push Day — Upper” animated fill as you scroll) -->
+      <div class="screen reveal" id="workoutScreen">
+
+        <div class="workout-header">
+          <div class="workout-headline">
+            Push Day — <span class="accent">Upper</span>
+          </div>
+          <div class="workout-time" id="workoutTime">0:00</div>
+        </div>
+
+        <div class="screen-body" style="padding-top:14px;">
+          <div class="demo-rows" id="demoRows">
+            <!-- rows injected by JS for 1:1 sequence -->
+          </div>
+        </div>
+
+        <div class="workout-progress">
+          <div class="wp-top">
+            <div>Workout Progress</div>
+            <div id="wpPct">0%</div>
+          </div>
+          <div class="wp-bar"><div id="wpFill"></div></div>
+
+          <div class="wp-nums">
+            <div>
+              <div class="wp-num"><span id="wpDone">0</span><small> / <span id="wpTotal">0</span></small></div>
+              <div class="wp-label">Sets</div>
+            </div>
+            <div>
+              <div class="wp-num"><span id="wpVolume">0</span> <small>lb</small></div>
+              <div class="wp-label">Volume</div>
+            </div>
+            <div class="wp-right" id="wpRight">—</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: EXERCISE VIEW (visual match + stays static; left screen animates) -->
+      <div class="screen reveal" id="exerciseScreen">
+
+        <div class="screen-header">
+          <div class="screen-top">
+            <button class="back-btn" aria-label="Back">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+              <button class="pill" style="height:34px;padding:0 12px;letter-spacing:.10em;">?</button>
+            </div>
+          </div>
+
+          <div class="screen-title">Dumbbell Triceps Extension</div>
+          <div class="screen-sub">Set 2 of 3</div>
+
+          <div class="ios-bar"><div id="exTopBar"></div></div>
+        </div>
+
+        <div class="screen-body">
+          <div class="last-session">
+            <div class="ls-title">
+              <span class="clock">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 8v5l3 2"/>
+                  <circle cx="12" cy="12" r="9"/>
+                </svg>
+              </span>
+              Last Session
+            </div>
+
+            <div class="ls-grid">
+              <div class="ls-cell">
+                <div class="k">Weight</div>
+                <div class="v">20.0 lb</div>
+              </div>
+              <div class="ls-cell">
+                <div class="k">Reps</div>
+                <div class="v">12</div>
+              </div>
+              <div class="ls-cell">
+                <div class="k">RPE</div>
+                <div class="v">7</div>
+              </div>
+            </div>
+
+            <div class="ls-date">Feb 5, 2026</div>
+          </div>
+
+          <div class="hint">
+            <span class="spark">✦</span>
+            Suggested: 12 reps • Moderate
+          </div>
+
+          <div class="set-card">
+            <div class="set-card-head">
+              <div class="set-card-title">
+                Set 1
+                <span class="done-badge" title="Done">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                </span>
+              </div>
+              <button class="close-x" aria-label="Close">✕</button>
+            </div>
+
+            <div class="set-grid">
+              <div class="field">
+                <label>Weight (lb)</label>
+                <div class="stepper">
+                  <button class="step-btn" type="button">−</button>
+                  <div class="step-val">20</div>
+                  <button class="step-btn" type="button">+</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Reps</label>
+                <div class="stepper">
+                  <button class="step-btn" type="button">−</button>
+                  <div class="step-val">12</div>
+                  <button class="step-btn" type="button">+</button>
+                </div>
+              </div>
+
+              <button class="action-btn reset" title="Reset" type="button" aria-label="Reset">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.7 9.7 0 0 0-6.7 2.7L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="set-card">
+            <div class="set-card-head">
+              <div class="set-card-title">Set 2</div>
+              <button class="close-x" aria-label="Close">✕</button>
+            </div>
+
+            <div class="set-grid">
+              <div class="field">
+                <label>Weight (lb)</label>
+                <div class="stepper">
+                  <button class="step-btn" type="button">−</button>
+                  <div class="step-val">20</div>
+                  <button class="step-btn" type="button">+</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Reps</label>
+                <div class="stepper">
+                  <button class="step-btn" type="button">−</button>
+                  <div class="step-val">12</div>
+                  <button class="step-btn" type="button">+</button>
+                </div>
+              </div>
+
+              <button class="action-btn confirm" title="Complete Set" type="button" aria-label="Complete">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-bottom">
+          <div class="bar"><div id="exBottomBar"></div></div>
+          <div class="grid">
+            <div>
+              <div class="eb-big">1 <span style="font-family:var(--fontBody);font-weight:800;color:rgba(255,255,255,.55);font-size:1.05rem">/3</span></div>
+              <div class="eb-sub">Sets</div>
+            </div>
+            <div>
+              <div class="eb-big">240 lb</div>
+              <div class="eb-sub">Volume</div>
+            </div>
+            <div class="eb-right">2 sets left</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="logo-dot" style="width:30px;height:30px;border-radius:10px;">
+        <img src="ironvector-logo.png" alt="IronVector"/>
+      </div>
+      <div style="font-family:var(--fontMono);letter-spacing:.12em;text-transform:uppercase;font-size:.75rem;">
+        IronVector
+      </div>
+    </div>
+
+    <div class="links">
+      <a href="#top">Top</a>
+      <a href="#demo">Demo</a>
+      <a href="https://apps.apple.com" target="_blank" rel="noreferrer">App Store</a>
+    </div>
+
+    <div style="font-family:var(--fontMono);font-size:.72rem;letter-spacing:.10em;">
+      © <span id="year"></span>
+    </div>
+  </footer>
+
+  <script>
+  // =========================
+  // NAV SCROLL
+  // =========================
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 12);
+  });
+
+  // =========================
+  // REVEAL ON SCROLL
+  // =========================
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries)=>{
+    entries.forEach((e,idx)=>{
+      if(e.isIntersecting){
+        setTimeout(()=> e.target.classList.add('visible'), idx * 90);
+      }
+    });
+  }, { threshold: .18 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // =========================
+  // STATIC BARS (exercise screen)
+  // =========================
+  const exTopBar = document.getElementById('exTopBar');
+  const exBottomBar = document.getElementById('exBottomBar');
+  setTimeout(()=>{
+    exTopBar.style.width = '66%';     // Set 2 of 3
+    exBottomBar.style.width = '33%';  // 1 / 3
+  }, 650);
+
+  // =========================
+  // PUSH DAY — UPPER (WorkoutView-style: per EXERCISE)
+  // =========================
+
+  const rowsData = [
+    { idx: 1, ex: 'Bench Press', sets: 4, reps: '5–8', rest: '120s', pr: '195 lb × 8', logged: '1/4', done: false },
+    { idx: 2, ex: 'Overhead Press', sets: 3, reps: '6–10', rest: '120s', pr: '105 lb × 6', logged: '0/3', done: false },
+    { idx: 3, ex: 'Incline DB Press', sets: 3, reps: '8–12', rest: '90s', pr: '75 lb × 8', logged: '0/3', done: false },
+    { idx: 4, ex: 'Lateral Raise', sets: 3, reps: '12–15', rest: '60s', pr: '30 lb × 15', logged: '0/3', done: false },
+    { idx: 5, ex: 'Cable Pushdown', sets: 3, reps: '10–15', rest: '60s', pr: '—', logged: '0/3', done: false }
+  ];
+
+  const demoRows = document.getElementById('demoRows');
+  const wpPct = document.getElementById('wpPct');
+  const wpFill = document.getElementById('wpFill');
+  const wpDone = document.getElementById('wpDone');
+  const wpTotal = document.getElementById('wpTotal');
+  const wpVolume = document.getElementById('wpVolume');
+  const wpRight = document.getElementById('wpRight');
+  const workoutTime = document.getElementById('workoutTime');
+
+  const miniPct = document.getElementById('miniPct');
+  const miniBar = document.getElementById('miniBar');
+  const miniTime = document.getElementById('miniTime');
+
+  wpTotal.textContent = rowsData.length.toString();
+
+  // Visual-only demo volume
+  const totalVolume = 10673;
+
+  function makeRow(item){
+    const el = document.createElement('div');
+    el.className = 'set-tile';
+
+    const color = item.done ? 'var(--green)' : 'var(--accent)';
+    const bg = item.done ? 'rgba(52,199,89,.18)' : 'rgba(255,59,48,.14)';
+
+    el.innerHTML = `
+      <div class="set-num" style="border-color:${color};color:${color};background:${bg}">${item.idx}</div>
+      <div class="set-main">
+        <div class="ex-name" style="font-size:1.15rem;">${item.ex}</div>
+        <div style="margin-top:4px;font-weight:800;color:rgba(255,255,255,.72);font-size:.95rem;">
+          ${item.sets} sets • ${item.reps} reps • ${item.rest} rest
+        </div>
+        <div style="margin-top:8px;color:var(--gold);font-weight:900;font-size:1rem;">★ PR: ${item.pr}</div>
+        <div style="margin-top:4px;font-weight:900;font-size:1rem;color:${color};">
+          ${item.logged} sets logged
+        </div>
+      </div>
+      <div style="opacity:.55;font-size:1.8rem;">›</div>
+    `;
+
+    return el;
+  }
+
+  // Render tiles
+  demoRows.innerHTML = '';
+  const rowEls = rowsData.map(item => {
+    const el = makeRow(item);
+    demoRows.appendChild(el);
+    return el;
+  });
+
+  let revealedCount = 0;
+
+  function formatTime(totalSeconds){
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m}:${String(s).padStart(2,'0')}`;
+  }
+
+  function setProgress(count){
+    const pct = Math.round((count / rowsData.length) * 100);
+    wpPct.textContent = pct + '%';
+    wpFill.style.width = pct + '%';
+
+    wpDone.textContent = count.toString();
+
+    const volNow = Math.round(totalVolume * (count / rowsData.length));
+    wpVolume.textContent = volNow.toString();
+
+    const left = rowsData.length - count;
+    wpRight.textContent = left === 0 ? 'Workout Complete' : `${left} exercises left`;
+
+    miniPct.textContent = pct + '%';
+    miniBar.style.width = pct + '%';
+
+    // map 0..100% to 0..153 seconds (2:33)
+    const seconds = Math.round(153 * (count / rowsData.length));
+    const t = formatTime(seconds);
+    workoutTime.textContent = t;
+    miniTime.textContent = t;
+  }
+
+  const rowObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const idx = rowEls.indexOf(e.target);
+        if(idx !== -1){
+          e.target.classList.add('visible');
+          const newCount = Math.max(revealedCount, idx + 1);
+          if(newCount !== revealedCount){
+            revealedCount = newCount;
+            setProgress(revealedCount);
+          }
+        }
+      }
+    });
+  }, { threshold: .45 });
+
+  rowEls.forEach(el => rowObs.observe(el));
+
+  // Initial
+  setProgress(0);
+
+  // Footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
