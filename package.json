@@ -1,0 +1,20 @@
+{
+  "name": "ironvector-webpage",
+  "version": "1.0.0",
+  "description": "IronVector landing page",
+  "scripts": {
+    "preview": "python3 -m http.server 8000",
+    "preview:node": "npx http-server -p 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronm65/IronVector-Webpage.git"
+  },
+  "keywords": [
+    "ironvector",
+    "landing-page",
+    "html"
+  ],
+  "author": "",
+  "license": "ISC"
+}
